@@ -4,20 +4,20 @@ require 'sinatra/reloader'
 
 class RandomNumberGenerator
 
-  attr_reader :random_number
+  attr_reader :number
 
-  def initialize(number)
-    @random_number = rand(number)
+  def initialize(max)
+    @number = rand(max)
   end
 
   def message
-    "The SECRET NUMBER is #{random_number}"
+    "The SECRET NUMBER is #{number}"
   end
 
 end
 
-number_generator = RandomNumberGenerator.new(100)
+rng = RandomNumberGenerator.new(100)
 
 get '/' do
-  number_generator.message
+  erb :index, :locals => {:number => rng.number }
 end
