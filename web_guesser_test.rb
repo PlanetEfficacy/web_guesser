@@ -18,12 +18,22 @@ class WebGuesserTest < Minitest::Test
 
   def test_it_can_return_feedback_that_a_guess_is_too_high
     actual = RandomNumberGenerator.new(100)
-    assert_equal "Way too high!", actual.feedback(1000)
+    assert_equal "Way too high!", actual.check_guess(1000)
   end
 
-  def test_it_can_return_feedback_that_a_gues_is_too_low
+  def test_it_can_return_feedback_that_a_guess_is_too_low
     actual = RandomNumberGenerator.new(100)
-    assert_equal "Way too low!", actual.feedback(-1)
+    assert_equal "Way too low!", actual.check_guess(-1)
+  end
+
+  def test_guesses_change_background
+    actual = RandomNumberGenerator.new(100)
+    assert_equal "#f4cccc", actual.close_guess
+    assert_equal "#f4cccc", actual.background
+    assert_equal "#e06666", actual.extreme_guess
+    assert_equal "#e06666", actual.background
+    assert_equal "#d9ead3", actual.successful_guess
+    assert_equal "#d9ead3", actual.background
   end
 
 end

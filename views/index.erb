@@ -1,7 +1,13 @@
 <html>
-  <head></head>
+  <head>
+  <style>
+    body {
+      background: <%= background %>;
+    }
+  </style>
+  </head>
   <body>
-    <p><%= message %></p>
+    <h3><%= message %></h3>
       <form>
         <input type='text' name='guess' />
         <input type='submit' value='Guess!' />
