@@ -4,19 +4,46 @@ require 'sinatra/reloader'
 class RandomNumberGenerator
 
   attr_reader :number,
-              :background
+              :background,
+              :guesses
 
   def initialize(max)
-    @number = rand(max)
-    @background
+    reset_game(max)
+  end
+
+  def overide(new_number)
+    @number == new_number
+  end
+
+  def subtract_guess
+    @guesses -= 1
+    "Try again - #{guesses} remaining."
+  end
+
+  def out_of_guesses?
+    @guesses == 0
   end
 
   def message
     "The SECRET NUMBER is #{number}"
   end
 
+  def reset_game(max)
+    @number = rand(max)
+    @guesses = 5
+    @background = "#d9d9d9"
+  end
+
   def success
-    "You got it right!\nThe SECRET NUMBER is #{number}"
+    old_number = number
+    reset_game(100)
+    "You got it right!\nThe SECRET NUMBER was #{old_number}"
+  end
+
+  def failure
+    old_number = number
+    reset_game(100)
+    "You got it wrong!\nThe SECRET NUMBER was #{old_number}"
   end
 
   def extreme_guess
@@ -31,9 +58,11 @@ class RandomNumberGenerator
     @background = "#d9ead3"
   end
 
-  def check_guess(guess)
-    return "" unless guess
-    guess = guess.to_i
+  def invalid_guess(guess)
+    ("0".."100").to_a.include?(guess)
+  end
+
+  def assess_guess(guess)
     if guess > number + 5
       extreme_guess
       "Way too high!"
@@ -47,21 +76,29 @@ class RandomNumberGenerator
       close_guess
       "Too low!"
     else
-      successful_guess
       success
     end
   end
+
+  def check_guess(guess)
+    return "" unless invalid_guess(guess)
+    return failure if out_of_guesses?
+    subtract_guess
+    assess_guess(guess.to_i)
+  end
 end
 
-rng = RandomNumberGenerator.new(100)
-
-set :number, rng.number
+game = RandomNumberGenerator.new(100)
 
 get '/' do
+
   guess = params["guess"]
-  message = rng.check_guess(guess)
-  background = rng.background
-  erb :index, :locals => {:number => settings.number,
+  message = game.check_guess(guess)
+  background = game.background
+  guesses_remaining = game.guesses
+  erb :index, :locals => {:number => game.number,
                           :message => message,
-                          :background => background}
+                          :background => background,
+                          :guesses_remaining => guesses_remaining,
+                          :guess => guess}
 end

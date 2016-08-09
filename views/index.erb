@@ -1,16 +1,36 @@
 <html>
   <head>
   <style>
-    body {
+    #main {
+      width : 400px;
+      height : 100px;
+      padding : 5px;
       background: <%= background %>;
+      outline-style : solid;
+      position: absolute;
+      top:0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    form {
+      position: absolute;
+      bottom: 0;
+      left: 115px;
     }
   </style>
   </head>
   <body>
-    <h3><%= message %></h3>
-      <form>
-        <input type='text' name='guess' />
-        <input type='submit' value='Guess!' />
-      </form>
+    <div id="main">
+      <h3><%= message %></h3>
+        <form>
+          <input type='text' name='guess' />
+          <input type='submit' value='Guess!' />
+        </form>
+    </div>
+    <p>Number: <%= number %></p>
+    <p>Guesses: <%= guesses_remaining %></p>
+    <p>Guess: <%= guess %></p>
   </body>
 </html>
