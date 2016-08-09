@@ -14,10 +14,20 @@
       right: 0;
       margin: auto;
     }
-    form {
+    #cheat {
+        display : <%= cheat %>;
+    }
+    #guess {
       position: absolute;
-      bottom: 0;
+      bottom: 25px;
       left: 115px;
+      display: <%= start %>;
+    }
+    #play {
+      position: absolute;
+      bottom: 25px;
+      left: 170px;
+      display: <%= restart %>;
     }
   </style>
   </head>
@@ -25,12 +35,19 @@
     <div id="main">
       <h3><%= message %></h3>
         <form>
-          <input type='text' name='guess' />
-          <input type='submit' value='Guess!' />
+          <div id="guess">
+            <input type='text' name='guess' />
+            <input type='submit' value='Guess!' />
+          </div>
+          <div id="play">
+            <input type='submit' name='play' value='Play!' />
+          </div>
         </form>
     </div>
-    <p>Number: <%= number %></p>
-    <p>Guesses: <%= guesses_remaining %></p>
-    <p>Guess: <%= guess %></p>
+    <div id="cheat">
+      <h3>Cheat Mode!</h3>
+      <p>Number: <%= number %></p>
+      <p>Guesses: <%= guesses_remaining %></p>
+      <p>Guess: <%= guess %></p>
   </body>
 </html>
